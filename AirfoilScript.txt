@@ -1,0 +1,22 @@
+#cloud-config
+
+apt_upgrade: true
+apt_update: true
+packages: 
+ - python-pip
+ - python-dev
+ - build-essential
+
+byobu_default: system
+
+runcmd:
+ - cd /home/ubuntu
+ - git clone https://github.com/douglasfrol/CloudProject.git
+ - tar -xzvf CloudProject/murtazo.tgz -C /home/ubuntu/
+ - tar -xzvf CloudProject/murtazo/cloudnaca.tgz -C /home/ubuntu/murtazo/
+ - tar -xzvf CloudProject/murtazo/navier_stokes_solver.tar -C /home/ubuntu/murtazo/
+ - curl -fsSL https://get.docker.com/ | sh
+ - curl -fsSL https://get.docker.com/gpg | sudo apt-key add -
+ - cd /home/ubuntu/CloudProject/
+ - docker pull quay.io/fenicsproject/stable:latest
+ - docker build -t Airfoil:latest .
