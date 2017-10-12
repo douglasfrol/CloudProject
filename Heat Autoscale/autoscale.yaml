@@ -11,7 +11,7 @@ resources:
       max_size: 2
       min_size: 1
       resources:
-        type: OS::Nova::Server::Worker
+        type: OS::Nova::Server
 
   scaleup_policy:
     type: OS::Heat::ScalingPolicy

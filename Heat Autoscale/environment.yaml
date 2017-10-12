@@ -1,2 +1,2 @@
 resource_registry:  
-    "OS::Nova::Server::Worker": "VMtemplate.yaml"
+    "OS::Nova::Server::Worker": "/home/ubuntu/CloudProject/Heat\ Autoscale/VMtemplate.yaml"
