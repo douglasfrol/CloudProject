@@ -108,6 +108,7 @@ resources:
           volume_id: { get_resource: volume }
       user_data: |
         #!/bin/sh
+        echo "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCd+oFxbik5l6X1BbZ7GtUtOtU51okyzTkqTAeuFL7JQbYpL8JWD+JaCDOTT9uvRQ9fsZmrI3dWmgQvdBIy+ItOSwgQmcemGnBqBpGiUSZPEXYHnYoNQHkpDD5fU06SzNH+7zy/Dd1LFHCUkXmN16R5y0M1CYRqnBEPQjpDsa32EbWq3Mqxjjj2Wzs2qjK7sux6NoNpUIjJDSop6G2G06eSge5DfxnWBa0nUENmV3CxxBJ3SWnpVIln6l6qzbkr8cV3E/sJ+KOtg681Xv9N9uOAPtZeb5pk2LZc2myy7MFYcUaLPrr0EipT3g7ahH6aSoa980eJzD6Hrz5nZM3VhhfR ubuntu@dofr" >> /home/ubuntu/.ssh/authorized_keys
         dd if=/dev/zero of=/dev/null &
       user_data_format: RAW
 
