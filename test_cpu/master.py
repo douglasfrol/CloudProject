@@ -10,7 +10,7 @@ def get_info(slave_id, action):
     if action == 'Q':
         print 'quitting slave'
         print slave_id
-    else if action == 'N':
+    elif action == 'N':
         print 'new user'
         print slave_id
     else:
