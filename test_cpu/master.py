@@ -5,11 +5,19 @@ app = Flask("master")
 def hello_world():
     return 'Hello, Slave!!!'
 
-@app.route('/slave/<int:slave_id>')
-def get_info(slave_id):
-    print slave_id
+@app.route('/slave/<int:slave_id>/<string:action>')
+def get_info(slave_id, action):
+    if action == 'Q':
+        print 'quitting slave'
+        print slave_id
+    else if action == 'N':
+        print 'new user'
+        print slave_id
+    else:
+        print 'not a good input'
+        return jsonify(0)
     #determin if the new caller is unique
-    return "u\n"
+    return jsonify(1)
 
 
 @app.route('/slave/<int:slave_id>/<float:cpu>')
