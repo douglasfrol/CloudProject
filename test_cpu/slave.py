@@ -7,6 +7,8 @@ fileStream = open(patToFile, 'r')
 UUID_str = str(UUID)
 ip_to_master = ''
 
+run = True
+
 try:
     with fileStream as openFile:
         for line in openFile:
@@ -19,16 +21,17 @@ finally:
     fileStream.close()
 
 def signal_handler(signal, frame):
+        global run
         print('quitting')
-        time.sleep(0.5)
-        sys.exit(0)
+        time.sleep(0.1)
+        run = False
 
 signal.signal(signal.SIGINT, signal_handler)
 
 
 url = 'http://'+ip_to_master+':5000/slave/'+UUID_str+'/'
 
-for i in range(5):
+while run:
     cpu = psutil.cpu_percent(interval=5, percpu=False)
     cpu_in_string = str(cpu)
     r = requests.get(url+cpu_in_string)
