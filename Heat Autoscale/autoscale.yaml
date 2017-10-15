@@ -43,9 +43,9 @@ resources:
 
 outputs:
   "Scale UP webhook":
-    value: { get_attr: [ scaleup_policy, alarm_url ] }
+    value: { get_attr: [ scaleup_policy, signal_url ] }
 
   "Scale DOWN webhook":
-    value: { get_attr: [ scaledown_policy, alarm_url ] }
+    value: { get_attr: [ scaledown_policy, signal_url ] }
 
 
