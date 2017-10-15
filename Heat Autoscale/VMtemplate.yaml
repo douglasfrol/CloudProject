@@ -29,20 +29,21 @@ parameters:
     description: Public network with floating IP addresses (Public External IPv4)
     default: Public External IPv4 Network
 
-  private_network:
-    type: string
-    default: SNIC 2017/13-45 Internal IPv4 Network
-
 # Resource allocation
 resources:
 
   cluster_sg:
     type: OS::Neutron::SecurityGroup
     properties:
-      name: dofr_security
+      name: cluster_sg
+      rules: 
+        - protocol: icmp
+        - protocol: tcp
+          port_range_min: 22
+          port_range_max: 22
 
-#  private_network: 
-#    type: OS::Neutron::Net
+  private_network: 
+    type: OS::Neutron::Net
 
   floating_ip:
     type: OS::Neutron::FloatingIP
@@ -55,34 +56,34 @@ resources:
       floatingip_id: { get_resource: floating_ip }
       port_id: { get_resource: port }
 
-#  private_subnet:
-#    type: OS::Neutron::Subnet
-#    properties:
-#      network_id: { get_resource: private_network }
-#      cidr: 10.10.10.0/24
-#      dns_nameservers:
-#        - 130.238.164.6 
-#        - 130.238.4.133 
-#        - 130.238.7.10
-#        - 130.239.1.90
-#        - 129.16.1.53
+  private_subnet:
+    type: OS::Neutron::Subnet
+    properties:
+      network_id: { get_resource: private_network }
+      cidr: 10.10.10.0/24
+      dns_nameservers:
+        - 130.238.164.6 
+        - 130.238.4.133 
+        - 130.238.7.10
+        - 130.239.1.90
+        - 129.16.1.53
 
-#  router:
-#    type: OS::Neutron::Router
-#    properties:
-#      external_gateway_info:
-#        network: { get_param: public_network }
+  router:
+    type: OS::Neutron::Router
+    properties:
+      external_gateway_info:
+        network: { get_param: public_network }
 
-#  router-interface:
-#    type: OS::Neutron::RouterInterface
-#    properties:
-#      router_id: { get_resource: router }
-#      subnet: { get_resource: private_subnet }
+  router-interface:
+    type: OS::Neutron::RouterInterface
+    properties:
+      router_id: { get_resource: router }
+      subnet: { get_resource: private_subnet }
 
   port:
     type: OS::Neutron::Port
     properties:
-      network: { get_param: private_network }
+      network: { get_resource: private_network }
       security_groups:
         - { get_resource: cluster_sg }
 
@@ -108,7 +109,7 @@ resources:
           volume_id: { get_resource: volume }
       user_data: |
         #!/bin/sh
-        echo "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCd+oFxbik5l6X1BbZ7GtUtOtU51okyzTkqTAeuFL7JQbYpL8JWD+JaCDOTT9uvRQ9fsZmrI3dWmgQvdBIy+ItOSwgQmcemGnBqBpGiUSZPEXYHnYoNQHkpDD5fU06SzNH+7zy/Dd1LFHCUkXmN16R5y0M1CYRqnBEPQjpDsa32EbWq3Mqxjjj2Wzs2qjK7sux6NoNpUIjJDSop6G2G06eSge5DfxnWBa0nUENmV3CxxBJ3SWnpVIln6l6qzbkr8cV3E/sJ+KOtg681Xv9N9uOAPtZeb5pk2LZc2myy7MFYcUaLPrr0EipT3g7ahH6aSoa980eJzD6Hrz5nZM3VhhfR ubuntu@dofr" >> /home/ubuntu/.ssh/authorized_keys
+        echo "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCd+oFxbik5l6X1BbZ7GtUtOtU51okyzTkqTAeuFL7JQbYpL8JWD+JaCDOTT9uvRQ9fsZmrI3dWmgQvdBIy+ItOSwgQmcemGnBqBpGiUSZPEXYHnYoNQHkpDD5fU06SzNH+7zy/Dd1LFHCUkXmN16R5y0M1CYRqnBEPQjpDsa32EbWq3Mqxjjj2Wzs2qjK7sux6NoNpUIjJDSop6G2G06eSge5DfxnWBa0nUENmV3CxxBJ3SWnpVIln6l6qzbkr8cV3E/sJ+KOtg681Xv9N9uOAPtZeb5pk2LZc2myy7MFYcUaLPrr0EipT3g7ahH6aSoa980eJzD6Hrz5nZM3VhhfR" >> /home/ubuntu/.ssh/authorized_keys
         dd if=/dev/zero of=/dev/null &
       user_data_format: RAW
 
