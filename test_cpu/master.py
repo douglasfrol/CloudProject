@@ -1,4 +1,5 @@
 from flask import Flask, jsonify
+import time
 app = Flask("master")
 
 @app.route('/')
@@ -27,7 +28,7 @@ def get_info_cpu(slave_id, cpu):
 
     #see if it is time for a scale up
     #call webhook to activate action
-
+    time.delay(4)
     return jsonify(1)
 
 if __name__ == '__main__':
