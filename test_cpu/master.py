@@ -3,7 +3,7 @@ app = Flask("master")
 
 @app.route('/')
 def hello_world():
-    return 'Hello, Slave!!!'
+    return 'Hello, Slave!'
 
 @app.route('/slave/<int:slave_id>/<string:action>')
 def get_info(slave_id, action):
