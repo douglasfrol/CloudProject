@@ -1,4 +1,3 @@
 resource_registry:  
     "OS::Nova::Server::Master": "/home/ubuntu/CloudProject/Heat\ Autoscale/MasterTemplate.yaml"
     "OS::Nova::Server::Worker": "/home/ubuntu/CloudProject/Heat\ Autoscale/WorkerTemplate.yaml"
-    ""
