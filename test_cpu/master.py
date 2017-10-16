@@ -7,6 +7,22 @@ dir_files = 'files_info/'
 def hello_world():
     return 'Hello, Slave!'
 
+def create_file():
+
+    return
+
+def read_files():
+
+    return
+
+def update_file():
+
+    return
+
+def delete_file():
+
+    return
+
 @app.route('/slave/<int:slave_id>/<string:action>')
 def get_info(slave_id, action):
     if action == 'Q':
@@ -28,6 +44,8 @@ def get_info(slave_id, action):
 def get_info_cpu(slave_id, cpu):
     print slave_id
     print cpu
+
+    if
     #update files
 
     #see if it is time for a scale up
