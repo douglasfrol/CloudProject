@@ -8,7 +8,7 @@ resources:
     properties:
       cooldown: 60
       desired_capacity: 1
-      max_size: 2
+      max_size: 3
       min_size: 1
       resource:
         type: OS::Nova::Server::Worker
@@ -30,16 +30,6 @@ resources:
       cooldown: 60
       scaling_adjustment: -1
       #type: webhook
-
-#  scale_up_webhook:
-#    type: OS::AutoScale::WebHook
-#    properties:
-#      auto_scaling_policy_id: { get_resource: scaleup_policy }
- 
-#  scale_down_webhook:
-#    type: OS::AutoScale::WebHook
-#    properties:
-#      auto_scaling_policy_id: { get_resource: scaledown_policy }
 
 outputs:
   "Scale UP webhook":

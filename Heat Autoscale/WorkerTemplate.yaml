@@ -1,0 +1,123 @@
+heat_template_version: 2014-10-16
+
+description: Template for creating a worker VM
+
+# Declare various parameters
+parameters:
+
+  image:
+    type: string
+    label: Image name or ID
+    description: Image to be used for worker VM (Ubuntu 16.04 LTS - Xenial Xerus)
+    default: 7211d89e-6b27-4986-9f53-f48868da6d0c
+
+  flavor:
+    type: string
+    label: Flavor 
+    description: Type of VM (i.e. flavor) to use
+    default: ssc.small
+
+  key:
+    type: string
+    label: Key name
+    description: Name of key-pair to be used for compute instance
+    default: dofr_keypair
+
+  public_network:
+    type: string
+    label: Public network name or ID
+    description: Public network with floating IP addresses (Public External IPv4)
+    default: Public External IPv4 Network
+
+# Resource allocation
+resources:
+
+  cluster_sg:
+    type: OS::Neutron::SecurityGroup
+    properties:
+      name: cluster_sg
+      rules:
+        - protocol: icmp
+        - protocol: tcp
+          port_range_min: 22
+          port_range_max: 22
+
+  private_network:
+    type: OS::Neutron::Net
+
+  private_subnet:
+    type: OS::Neutron::Subnet
+    properties:
+      network_id: { get_resource: private_network }
+      cidr: 10.10.10.0/24
+      dns_nameservers:
+        - 130.238.164.6
+        - 130.238.4.133
+        - 130.238.7.10
+        - 130.239.1.90
+        - 129.16.1.53
+
+  router:
+    type: OS::Neutron::Router
+    properties:
+      external_gateway_info:
+        network: { get_param: public_network }
+
+  router-interface:
+    type: OS::Neutron::RouterInterface
+    properties:
+      router_id: { get_resource: router }
+      subnet: { get_resource: private_subnet }
+
+  port:
+    type: OS::Neutron::Port
+    properties:
+      network: { get_resource: private_network }
+      security_groups:
+        - { get_resource: cluster_sg }
+
+  #volume:
+  #  type: OS::Cinder::Volume
+  #  properties:
+  #    size: 5
+
+  server:
+    type: OS::Nova::Server
+    properties:
+      name: worker
+      image: { get_param: image }
+      flavor: { get_param: flavor }
+      key_name: { get_param: key }
+      #security_groups:
+      #  - { get_resource: cluster_sg }
+      networks:
+        - port: { get_resource: port }
+      #block_device_mapping:
+      #  - device_name: vda
+      #    delete_on_termination: true
+      #    volume_id: { get_resource: volume }
+      user_data: |
+        #!/bin/sh
+        echo "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCd+oFxbik5l6X1BbZ7GtUtOtU51okyzTkqTAeuFL7JQbYpL8JWD+JaCDOTT9uvRQ9fsZmrI3dWmgQvdBIy+I$
+        dd if=/dev/zero of=/dev/null &
+      user_data_format: RAW
+
+  floating_ip:
+    type: OS::Neutron::FloatingIP
+    properties:
+      floating_network: { get_param: public_network }
+
+  floating_ip_assoc:
+    type: OS::Neutron::FloatingIPAssociation
+    properties:
+      floatingip_id: { get_resource: floating_ip }
+      port_id: { get_resource: port }
+
+
+outputs:
+  instance_name:
+    description: Name of the instance
+    value: { get_attr: [server, name] }
+  instance_ip:
+    description: IP address of the instance
+    value: { get_attr: [server, first_address, floating_ip, floating_ip_address] }
