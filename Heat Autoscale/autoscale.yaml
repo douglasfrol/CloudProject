@@ -5,7 +5,7 @@ description: Group for auto scaling
 resources:
 
   master: 
-    type: OS::Heat::Server::Master
+    type: OS::Nova::Server::Master
 
   group:
     type: OS::Heat::AutoScalingGroup
