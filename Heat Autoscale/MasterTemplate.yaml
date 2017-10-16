@@ -78,7 +78,7 @@ resources:
   port:
     type: OS::Neutron::Port
     properties:
-      network: { get_resource: private_network }
+      network: { get_param: private_network }
       security_groups:
         - { get_resource: cluster_sg }
 
