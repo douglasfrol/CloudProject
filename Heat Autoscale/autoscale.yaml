@@ -3,6 +3,10 @@ heat_template_version: 2014-10-16
 description: Group for auto scaling
 
 resources:
+
+  master: 
+    type: OS::Heat::Server::Master
+
   group:
     type: OS::Heat::AutoScalingGroup
     properties:
