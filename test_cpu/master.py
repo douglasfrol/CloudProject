@@ -22,7 +22,7 @@ def create_file(path, slave_id, cpu):
     file_status = file_exists(path+slave_id)
     if check_writable(path) and not file_status:
         try:
-            f = open(path+slave_id, 'w')
+            f = open(path+str(slave_id), 'w')
             f.write([slave_id, cpu, time.time()])  # python will convert \n to os.linesep
             f.close()
             return True
@@ -39,7 +39,7 @@ def read_files():
 def update_file(path, slave_id, cpu):
     if file_exists(file_path) and check_writable(path+slave_id):
         try:
-            f = open(path+slave_id, 'w')
+            f = open(path+str(slave_id), 'w')
             f.write([slave_id, cpu, time.time()])  # python will convert \n to os.linesep
             f.close()
             return True
@@ -61,7 +61,7 @@ def get_info(slave_id, action):
     if action == 'Q':
         print 'quitting slave'
         print slave_id
-        print delete_file(dir_files+slave_id)
+        print delete_file(dir_files+str(slave_id))
         #remove file in dir
     elif action == 'N':
         print 'new user'
@@ -80,7 +80,7 @@ def get_info_cpu(slave_id, cpu):
     print slave_id
     print cpu
 
-    if update_file(slave_id, cpu) is None:
+    if update_file(dir_files, slave_id, cpu) is None:
         print "it went crazy ", slave_id, cpu
         return 0
 
