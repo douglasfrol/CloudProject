@@ -90,7 +90,7 @@ resources:
   server:
     type: OS::Nova::Server
     properties:
-      name: worker
+      name: Master
       image: { get_param: image }
       flavor: { get_param: flavor }
       key_name: { get_param: key }
