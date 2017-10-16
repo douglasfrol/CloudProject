@@ -36,7 +36,7 @@ def read_files():
     return
 
 def update_file(path, slave_id, cpu):
-    if file_exists(path) and check_writable(path+slave_id):
+    if file_exists(path) and check_writable(path+str(slave_id)):
         try:
             f = open(path+str(slave_id), 'w')
             f.write([slave_id, cpu, time.time()])  # python will convert \n to os.linesep
