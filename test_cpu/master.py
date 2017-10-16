@@ -18,19 +18,17 @@ def check_writable(path):
 def file_exists(path_file):
         return os.path.exists(path_file)
 
-def create_file(slave_id, cpu):
+def create_file(path, slave_id, cpu):
     file_status = file_exists(path+slave_id)
-    if check_writable(dir_files) and not file_status:
+    if check_writable(path) and not file_status:
         try:
-            f = open('myfile', 'w')
-            f.write('hi there\n')  # python will convert \n to os.linesep
+            f = open(path+slave_id, 'w')
+            f.write([slave_id, cpu, time.time()])  # python will convert \n to os.linesep
             f.close()
             return True
         except Exception as e:
             print 'wrong in create_file() ----> error'
             print e
-    elif file_status:
-        return False
 
     return False
 
@@ -38,23 +36,37 @@ def read_files():
 
     return
 
-def update_file(slave_id, cpu):
+def update_file(path, slave_id, cpu):
+    if file_exists(file_path) and check_writable(path+slave_id):
+        try:
+            f = open(path+slave_id, 'w')
+            f.write([slave_id, cpu, time.time()])  # python will convert \n to os.linesep
+            f.close()
+            return True
+        except Exception as e:
+            print 'Wrong in update_file() ----> error'
+            print e
 
-    return
+    return False
 
-def delete_file(slave_id):
+def delete_file(file_path):
 
-    return
+    if file_exists(file_path):
+        return os.remove(file_path)
+
+    return False
 
 @app.route('/slave/<int:slave_id>/<string:action>')
 def get_info(slave_id, action):
     if action == 'Q':
         print 'quitting slave'
         print slave_id
+        print delete_file(dir_files+slave_id)
         #remove file in dir
     elif action == 'N':
         print 'new user'
         print slave_id
+        print create_file(dir_files, slave_id, 0.0)
         #create file in dir
     else:
         print 'not a good input'
