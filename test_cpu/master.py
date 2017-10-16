@@ -1,7 +1,6 @@
 from flask import Flask, jsonify
 import time, os
 app = Flask("master")
-dir_files = 'files_info/'
 
 @app.route('/')
 def hello_world():
@@ -19,7 +18,7 @@ def file_exists(path_file):
         return os.path.exists(path_file)
 
 def create_file(path, slave_id, cpu):
-    file_status = file_exists(path+slave_id)
+    file_status = file_exists(path+str(slave_id))
     if check_writable(path) and not file_status:
         try:
             f = open(path+str(slave_id), 'w')
@@ -58,6 +57,7 @@ def delete_file(file_path):
 
 @app.route('/slave/<int:slave_id>/<string:action>')
 def get_info(slave_id, action):
+    dir_files = 'files_info/'
     if action == 'Q':
         print 'quitting slave'
         print slave_id
@@ -77,6 +77,7 @@ def get_info(slave_id, action):
 
 @app.route('/slave/<int:slave_id>/<float:cpu>')
 def get_info_cpu(slave_id, cpu):
+    dir_files = 'files_info/'
     print slave_id
     print cpu
 
