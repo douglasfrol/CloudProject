@@ -17,12 +17,22 @@ def check_writable(path):
 def file_exists(path_file):
         return os.path.exists(path_file)
 
+def getFiles(path_files):
+
+    try:
+        filesInDir = os.listdir(path_files)
+        return filesInDir
+    except Exception as e:
+        print e
+
+    return []
+
 def create_file(path, slave_id, cpu):
     file_status = file_exists(path+str(slave_id))
     if check_writable(path) and not file_status:
         try:
             f = open(path+str(slave_id), 'w')
-            f.write(str([slave_id, cpu, time.time()]))  # python will convert \n to os.linesep
+            f.write(str([slave_id, cpu, time.time()]) )  # python will convert \n to os.linesep
             f.close()
             return True
         except Exception as e:
@@ -31,7 +41,22 @@ def create_file(path, slave_id, cpu):
 
     return False
 
-def read_files():
+def get_info_in_file(path_file):
+    fileStream = open(path_file, 'r')
+    try:
+        with fileStream as openFile:
+            print openFile[0]
+    except Exception as e:
+        print '---> galet i get_info_in_file()'
+        print e
+
+    return
+
+def read_files(path_files):
+
+    files = getFiles(path_files)
+    for f in files:
+        if f[0] != '.':
 
     return
 
@@ -43,7 +68,7 @@ def update_file(path, slave_id, cpu):
             f.close()
             return True
         except Exception as e:
-            print 'Wrong in update_file() ----> error'
+            print 'Wrong in update_file() ---> error'
             print e
 
     return False
@@ -51,7 +76,8 @@ def update_file(path, slave_id, cpu):
 def delete_file(file_path):
 
     if file_exists(file_path):
-        return os.remove(file_path)
+        os.remove(file_path)
+        return True
 
     return False
 
@@ -81,11 +107,11 @@ def get_info_cpu(slave_id, cpu):
     print slave_id
     print cpu
 
-    if update_file(dir_files, slave_id, cpu) is None:
+    if update_file(dir_files, slave_id, cpu, time.time()) is None:
         print "it went crazy ", slave_id, cpu
         return 0
 
-    info_slaves = read_files()
+    info_slaves = read_files(dir_files)
     if info_slaves is not None:
         #iterate over array and se if it is time for a scaleing
         #call webhook to activate action
