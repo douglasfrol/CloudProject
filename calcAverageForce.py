@@ -1,12 +1,15 @@
 import csv
+import os
 #Calculates the average lift and drag force of the values 
 #located in drag_ligt.m in the same folder as this script
 
 no_of_decimals = 2
 filename = 'drag_ligt.m'
+file_directory = '/home/ubuntu/murtazo/navier_stokes_solver/'
 
 def calcAvgLiftAndDrag():
-     with open('drag_ligt.m', 'rb') as csvfile:
+     os.chdir(file_directory)
+     with open(filename, 'rb') as csvfile:
           csv_reader = csv.DictReader(csvfile, delimiter='\t')
           sum_lift = 0
           sum_drag = 0
