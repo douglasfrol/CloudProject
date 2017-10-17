@@ -1,7 +1,7 @@
 import requests, flask, psutil, time, re, signal, sys
 
 from random import randint
-UUID = randint(0, 100000)
+UUID = randint(0, 1000000)
 patToFile = "file_ip.txt"
 fileStream = open(patToFile, 'r')
 UUID_str = str(UUID)
@@ -34,10 +34,10 @@ def get_url():
                 if line != '\n':
                     ip_to_master = re.sub('[^0-9.]+', '', line)
                     url += ip_to_master+':5000/slave/'+UUID_str+'/'
-
     except Exception as e:
         print "nu blev det GALET"
         print e
+        return
     finally:
         fileStream.close()
     return url
@@ -48,7 +48,7 @@ if __name__ == '__main__':
 
     url = get_url()
     make_call(url, 'N') # init new slave
-
+    print "start"
     try:
         while run:
             cpu = psutil.cpu_percent(interval=5, percpu=False)

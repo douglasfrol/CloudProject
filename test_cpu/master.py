@@ -32,7 +32,7 @@ def create_file(path, slave_id, cpu):
     if check_writable(path) and not file_status:
         try:
             f = open(path+str(slave_id), 'w')
-            f.write(str([slave_id, cpu, time.time()]) )  # python will convert \n to os.linesep
+            f.write(str([slave_id, cpu, time.time()]) )
             f.close()
             return True
         except Exception as e:
@@ -84,6 +84,7 @@ def delete_file(file_path):
 @app.route('/slave/<int:slave_id>/<string:action>')
 def get_info(slave_id, action):
     dir_files = 'files_info/'
+    print 'got call'
     if action == 'Q':
         print 'quitting slave'
         print slave_id
