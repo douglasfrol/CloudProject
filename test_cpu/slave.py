@@ -1,12 +1,11 @@
 import requests, flask, psutil, time, re, signal, sys
 
 from random import randint
-UUID = randint(0, 10000)
+UUID = randint(0, 1000000)
 patToFile = "file_ip.txt"
 fileStream = open(patToFile, 'r')
 UUID_str = str(UUID)
 ip_to_master = ''
-
 run = True
 failed_con = 0
 
