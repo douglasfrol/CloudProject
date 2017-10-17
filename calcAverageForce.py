@@ -5,9 +5,13 @@ import os
 
 no_of_decimals = 2
 filename = 'drag_ligt.m'
-file_directory = '/home/ubuntu/murtazo/navier_stokes_solver/'
+file_directory = '/home/ubuntu/murtazo/navier_stokes_solver/results/'
 
 def calcAvgLiftAndDrag():
+     no_of_decimals = 2
+     filename = 'drag_ligt.m'
+     file_directory = '/home/ubuntu/murtazo/navier_stokes_solver/results/'
+
      os.chdir(file_directory)
      with open(filename, 'rb') as csvfile:
           csv_reader = csv.DictReader(csvfile, delimiter='\t')

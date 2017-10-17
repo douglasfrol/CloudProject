@@ -1,6 +1,7 @@
 import sys
 import subprocess
 import os
+from celery import Celery
 from database import readValues
 from worker import airfoil
 
@@ -73,7 +74,9 @@ def mainFunction():
     returnAngles = {}
     for angle in angles:
         if angle in notInDb: 
-            returnAngles[angle] = airfoil.delay('r0a' + str(angle) + 'n200.msh')
+            returnAngles[angle] = airfoil.delay('r0a' + str(angle) + 'n200.xml')
         else:
             returnAngles[angle] = inDb[angle]
     return returnAngles
+
+mainFunction()
