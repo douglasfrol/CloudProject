@@ -24,14 +24,14 @@ def eraseResults():
 def createResults():
 	sql = """CREATE TABLE RESULTS (
 			ANGLE FLOAT,
-			VELOCITY FLOAT,
-			PRESSURE FLOAT)"""
+			DRAG FLOAT,
+			LIFT FLOAT)"""
 	executeSQL(sql)
 
-def insert(angle, velocity, pressure):
+def insert(angle, drag, lift):
 	#TODO Check valid input?
 	db, cursor = connectAndGetCursor()
-	sql = "INSERT INTO RESULTS (ANGLE, VELOCITY, PRESSURE) VALUES ('" + str(angle) + "','" + str(velocity) + "','" + str(pressure) + "')"
+	sql = "INSERT INTO RESULTS (ANGLE, DRAG, LIFT) VALUES ('" + str(angle) + "','" + str(drag) + "','" + str(lift) + "')"
 	try:
 		cursor.execute(sql)
 		db.commit()
@@ -48,9 +48,9 @@ def readValues(angle):
 		cursor.execute(sql)
 		results = cursor.fetchall()
 		for row in results:
-			velocity = row[1]
-			pressure = row[2]
-		return velocity, pressure
+			drag = row[1]
+			lift = row[2]
+		return drag, lift
 	except:	 
 		print "Unable to read data/No such angle in DB"
 		return -1, -1

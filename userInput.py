@@ -2,6 +2,10 @@ import sys
 import subprocess
 import os
 from database import readValues
+from worker import airfoil
+
+appBroker = 'amqp://guest@localhost//'
+debug = True
 
 def getUserInput():
     cmdArgs = sys.argv
@@ -21,23 +25,17 @@ def anglesToCheck(values):
         angleList.append(angle)
     return (angleList)
 
-def checkDatabase():
-    values = getUserInput()
-    angles = anglesToCheck(values)
+def checkDatabase(values, angles):    
     notInDb = []
+    #'angle' = [drag, lift]
+    inDb = {}
     for i in angles:
         if readValues(i) != (-1,-1):
-            print "Values already stored in database! Velocity: " + str(readValues(i)[0]) + ", Pressure: " + str(readValues(i)[1])
+            print "Values already stored in database! Drag: " + str(readValues(i)[0]) + ", Lift: " + str(readValues(i)[1])
+            inDb[i] = [readValues(i)[0], readValues(i)[1]]
         else:
-            notInDb.append(i)        
-
-    #Check if list is not empty
-    if notInDb:
-        print "Creating meshes for angles"
-        createMeshes(values)
-        convertMeshes(angles)
-    else:
-        print "All angles already calculated"
+            notInDb.append(i)  
+    return notInDb, inDb
     
 
 def createMeshes(values):
@@ -51,4 +49,31 @@ def convertMeshes(angles):
     for angle in angles:
         bashStrings = ['sudo', 'dolfin-convert', 'r0a' + str(angle) + 'n200.msh', 'r0a' + str(angle) + 'n200.xml']
         subprocess.call(bashStrings, cwd = directory)        
-checkDatabase()
+
+def printDebug(string):
+    if debug:
+        print(string)
+
+app = Celery('tasks', backend='rpc://', broker=appBroker)
+
+def mainFunction():
+    values = getUserInput()
+    angles = anglesToCheck(values)
+    notInDb, inDb = checkDatabase(values, angles)
+    printDebug('DB checked. In database:')
+    
+    #Check if list is not empty
+    if notInDb:
+        print "Creating meshes for angles"
+        createMeshes(values)
+        convertMeshes(angles)
+    else:
+        print "All angles already calculated"
+    #'angle' = [drag, lift]
+    returnAngles = {}
+    for angle in angles:
+        if angle in notInDb: 
+            returnAngles[angle] = airfoil.delay('r0a' + str(angle) + 'n200.msh')
+        else:
+            returnAngles[angle] = inDb[angle]
+    return returnAngles
