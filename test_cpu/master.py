@@ -108,7 +108,7 @@ def get_info_cpu(slave_id, cpu):
     print slave_id
     print cpu
 
-    if update_file(dir_files, slave_id, cpu, time.time()) is None:
+    if update_file(dir_files, slave_id, cpu) is None:
         print "it went crazy ", slave_id, cpu
         return 0
 

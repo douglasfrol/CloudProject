@@ -1,7 +1,7 @@
 import requests, flask, psutil, time, re, signal, sys
 
 from random import randint
-UUID = randint(0, 1000000)
+UUID = randint(0, 10000)
 patToFile = "file_ip.txt"
 fileStream = open(patToFile, 'r')
 UUID_str = str(UUID)
@@ -13,6 +13,7 @@ failed_con = 0
 def make_call(url_link, value):
     global failed_con
     try:
+        print "making call to " + url_link+value
         r = requests.get(url_link+value)
         response_json = r.json()
     except Exception as e:
@@ -47,7 +48,7 @@ if __name__ == '__main__':
     signal.signal(signal.SIGINT, signal_handler)
 
     url = get_url()
-    make_call(url, 'N') # init new slave
+    print make_call(url, 'N') # init new slave
     print "start"
     try:
         while run:
