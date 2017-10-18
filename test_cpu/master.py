@@ -94,9 +94,9 @@ def clear_dir(path):
             delete_file(path+f)
 
 def determin_scaleing(slave_info):
-    s_upp = 90
-    s_down = 30
-    time_lim = 20
+    s_upp = 90 # Cpu
+    s_down = 30 #Cpu
+    time_lim = 180
     dir_file = 'files_info/0'
     scale_flag = -1
     for slave in slave_info:
@@ -105,11 +105,10 @@ def determin_scaleing(slave_info):
                 scale_flag = 1
             elif slave[1] < s_down and slave[2] > time.time()-time_lim :
                 scale_flag = 0
-                print "flaggan satt till 0"
 
     if scale_flag == 1:
         info_master = get_info_in_file(dir_file)
-        if int(info_master[1]) == 1 and float(info_master[2]) < time.time()-(10):
+        if int(info_master[1]) == 1 and float(info_master[2]) < time.time()-(90):
             # time to scale
             print 'time to scale upp'
         elif int(info_master[1]) == 0:
@@ -118,7 +117,7 @@ def determin_scaleing(slave_info):
         info_master = get_info_in_file(dir_file)
         print info_master
 
-        if int(info_master[1]) == 0 and float(info_master[2]) < time.time()-(10):
+        if int(info_master[1]) == 0 and float(info_master[2]) < time.time()-(90):
             # time to scale
             print 'time to scale down'
         elif int(info_master[1]) == 1:
