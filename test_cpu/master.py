@@ -160,4 +160,5 @@ def get_info_cpu(slave_id, cpu):
 
 if __name__ == '__main__':
     clear_dir('files_info/')
+    create_file('files_info/', 0, 0):
     app.run(host= '0.0.0.0', debug=True)
