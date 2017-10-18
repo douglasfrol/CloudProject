@@ -57,6 +57,7 @@ if __name__ == '__main__':
     make_call(url, 'N') # init new slave
     try:
         while run:
+            time.sleep(15)
             cpu = psutil.cpu_percent(interval=5, percpu=False)
             cpu_in_string = str(cpu)
             response = make_call(url, cpu_in_string)
@@ -69,7 +70,6 @@ if __name__ == '__main__':
                 print 'galet med respons --> mastern'
             else:
                 print 'the response was: ', response
-            time.sleep(15)
 
     except Exception as e:
         print e
