@@ -46,8 +46,7 @@ if __name__ == '__main__':
     signal.signal(signal.SIGINT, signal_handler)
 
     url = get_url()
-    print make_call(url, 'N') # init new slave
-    print "start"
+    make_call(url, 'N') # init new slave
     try:
         while run:
             cpu = psutil.cpu_percent(interval=5, percpu=False)

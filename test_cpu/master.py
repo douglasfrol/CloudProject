@@ -115,8 +115,6 @@ def determin_scaleing(slave_info):
             update_file('files_info/', 0, 1)
     elif scale_flag == 0:
         info_master = get_info_in_file(dir_file)
-        print info_master
-
         if int(info_master[1]) == 0 and float(info_master[2]) < time.time()-(90):
             # time to scale
             print 'time to scale down'
