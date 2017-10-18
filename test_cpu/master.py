@@ -46,11 +46,13 @@ def create_file(path, slave_id, cpu):
         try:
             f = open(path+str(slave_id), 'w')
             f.write(str(slave_id)+','+str(cpu)+','+str(time.time()))
-            f.close()
+
             return True
         except Exception as e:
             print 'wrong in create_file() ----> error'
             print e
+        finally:
+            f.close()
 
     return False
 
@@ -65,6 +67,8 @@ def get_info_in_file(path_file):
     except Exception as e:
         print '---> galet i get_info_in_file()'
         print e
+    finally:
+        fileStream.close()
 
     return
 
