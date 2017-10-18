@@ -105,6 +105,8 @@ def determin_scaleing(slave_info):
                 scale_flag = 1
             elif slave[1] < s_down and slave[2] > time.time()-time_lim :
                 scale_flag = 0
+                print "flaggan satt till 0"
+
     if scale_flag == 1:
         info_master = get_info_in_file(dir_file)
         if info_master[1] == 1 and info_master[2] < time.time()-(10):
@@ -114,6 +116,7 @@ def determin_scaleing(slave_info):
             update_file('files_info/', 0, 1)
     elif scale_flag == 0:
         info_master = get_info_in_file(dir_file)
+        print info_master
         if info_master[1] == 0 and info_master[2] < time.time()-(10):
             # time to scale
             print 'time to scale down'
