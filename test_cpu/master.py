@@ -1,6 +1,19 @@
 from flask import Flask, jsonify
-import time, os
+import time, os, requests
 app = Flask("master")
+
+webhook_url_up = "http://#"
+webhook_url_down = "http://#"
+webhook_token = ""
+
+#######################
+#
+#
+# Fulare kod kan man leta efter.....
+#
+#
+#
+#######
 
 @app.route('/')
 def hello_world():
@@ -33,11 +46,13 @@ def create_file(path, slave_id, cpu):
         try:
             f = open(path+str(slave_id), 'w')
             f.write(str(slave_id)+','+str(cpu)+','+str(time.time()))
-            f.close()
+
             return True
         except Exception as e:
             print 'wrong in create_file() ----> error'
             print e
+        finally:
+            f.close()
 
     return False
 
@@ -52,6 +67,8 @@ def get_info_in_file(path_file):
     except Exception as e:
         print '---> galet i get_info_in_file()'
         print e
+    finally:
+        fileStream.close()
 
     return
 
@@ -101,7 +118,7 @@ def determin_scaleing(slave_info):
     scale_flag = -1
     for slave in slave_info:
         if slave[1] is not None and slave[2] is not None:
-            if slave[1] > s_upp and slave[2] > time.time()-time_lim and scale_flag == -1:
+            if slave[1] > s_upp and slave[2] > time.time()-time_lim and scale_flag != 0:
                 scale_flag = 1
             elif slave[1] < s_down and slave[2] > time.time()-time_lim :
                 scale_flag = 0
@@ -109,18 +126,27 @@ def determin_scaleing(slave_info):
     if scale_flag == 1:
         info_master = get_info_in_file(dir_file)
         if int(info_master[1]) == 1 and float(info_master[2]) < time.time()-(90):
-            # time to scale
+
+            headers = {
+                'X-Auth-Token': webhook_token,
+            }
+            requests.post(webhook_url_up, headers=headers)
+
             print 'time to scale upp'
         elif int(info_master[1]) == 0:
             update_file('files_info/', 0, 1)
     elif scale_flag == 0:
         info_master = get_info_in_file(dir_file)
         if int(info_master[1]) == 0 and float(info_master[2]) < time.time()-(90):
-            # time to scale
+
+            headers = {
+                'X-Auth-Token': webhook_token,
+            }
+            requests.post(webhook_url_down, headers=headers)
+
             print 'time to scale down'
         elif int(info_master[1]) == 1:
-            update_file('files_info/', 0, 1)
-
+            update_file('files_info/', 0, 0)
 
 
 @app.route('/slave/<int:slave_id>/<string:action>')
@@ -130,16 +156,14 @@ def get_info(slave_id, action):
         print 'quitting slave'
         print slave_id
         print delete_file(dir_files+str(slave_id))
-        #remove file in dir
     elif action == 'N':
         print 'new user'
         print slave_id
         print create_file(dir_files, slave_id, 0.0)
-        #create file in dir
     else:
         print 'not a good input'
         return jsonify(0)
-    #determin if the new caller is unique
+
     return jsonify(1)
 
 
@@ -151,7 +175,7 @@ def get_info_cpu(slave_id, cpu):
 
     if update_file(dir_files, slave_id, cpu) is None:
         print "it went crazy ", slave_id, cpu
-        return 0
+        return jsonify(0)
 
     info_slaves = read_files(dir_files)
     if info_slaves is not None:
