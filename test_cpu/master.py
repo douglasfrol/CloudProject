@@ -122,7 +122,6 @@ def determin_scaleing(slave_info):
             update_file('files_info/', 0, 1)
 
 
-
 @app.route('/slave/<int:slave_id>/<string:action>')
 def get_info(slave_id, action):
     dir_files = 'files_info/'
@@ -139,7 +138,7 @@ def get_info(slave_id, action):
     else:
         print 'not a good input'
         return jsonify(0)
-    #determin if the new caller is unique
+
     return jsonify(1)
 
 
@@ -151,7 +150,7 @@ def get_info_cpu(slave_id, cpu):
 
     if update_file(dir_files, slave_id, cpu) is None:
         print "it went crazy ", slave_id, cpu
-        return 0
+        return jsonify(0)
 
     info_slaves = read_files(dir_files)
     if info_slaves is not None:

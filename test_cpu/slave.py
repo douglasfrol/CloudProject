@@ -61,7 +61,7 @@ if __name__ == '__main__':
                 print 'galet med respons --> mastern'
             else:
                 print 'the response was: ', response
-            time.sleep(1)
+            time.sleep(15)
 
     except Exception as e:
         print e
