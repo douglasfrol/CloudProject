@@ -47,7 +47,8 @@ def get_info_in_file(path_file):
         with fileStream as openFile:
             for line in openFile:
                 if line != '\n':
-                    print line
+                    return line.split(",")
+
     except Exception as e:
         print '---> galet i get_info_in_file()'
         print e
