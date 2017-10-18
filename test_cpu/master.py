@@ -125,7 +125,6 @@ def get_info_cpu(slave_id, cpu):
     if info_slaves is not None:
         for slave in info_slaves:
             print slave
-        return
 
     return jsonify(1)
 
