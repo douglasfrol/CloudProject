@@ -2,6 +2,19 @@ from flask import Flask, jsonify
 import time, os
 app = Flask("master")
 
+webhook_url_up = ""
+webhook_url_down = ""
+webhook_token = ""
+
+#######################
+#
+#
+# Fulare kod kan man leta efter.....
+#
+#
+#
+#######
+
 @app.route('/')
 def hello_world():
     return 'Hello, Slave!'
@@ -101,7 +114,7 @@ def determin_scaleing(slave_info):
     scale_flag = -1
     for slave in slave_info:
         if slave[1] is not None and slave[2] is not None:
-            if slave[1] > s_upp and slave[2] > time.time()-time_lim and scale_flag == -1:
+            if slave[1] > s_upp and slave[2] > time.time()-time_lim and scale_flag != 0:
                 scale_flag = 1
             elif slave[1] < s_down and slave[2] > time.time()-time_lim :
                 scale_flag = 0
@@ -109,14 +122,14 @@ def determin_scaleing(slave_info):
     if scale_flag == 1:
         info_master = get_info_in_file(dir_file)
         if int(info_master[1]) == 1 and float(info_master[2]) < time.time()-(90):
-            # time to scale
+            curl -i -H "X-Auth-Token: "+webhook_token -X POST webhook_url_up
             print 'time to scale upp'
         elif int(info_master[1]) == 0:
             update_file('files_info/', 0, 1)
     elif scale_flag == 0:
         info_master = get_info_in_file(dir_file)
         if int(info_master[1]) == 0 and float(info_master[2]) < time.time()-(90):
-            # time to scale
+            curl -i -H "X-Auth-Token: "+webhook_token -X POST webhook_url_down
             print 'time to scale down'
         elif int(info_master[1]) == 1:
             update_file('files_info/', 0, 1)

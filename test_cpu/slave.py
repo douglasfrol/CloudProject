@@ -1,5 +1,13 @@
 import requests, flask, psutil, time, re, signal, sys
 
+#######################
+#
+#
+# Fulare kod kan man leta efter.....
+#
+#
+#
+#######
 from random import randint
 UUID = randint(2, 1000000)
 patToFile = "file_ip.txt"
