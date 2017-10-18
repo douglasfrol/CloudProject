@@ -56,12 +56,12 @@ def get_info_in_file(path_file):
     return
 
 def read_files(path_files):
-
+    ret = []
     files = getFiles(path_files)
     for f in files:
         if f[0] != '.':
-            get_info_in_file(path_files+f)
-    return
+            ret.append(get_info_in_file(path_files+f))
+    return ret
 
 def update_file(path, slave_id, cpu):
     if file_exists(path) and check_writable(path+str(slave_id)):
@@ -94,7 +94,6 @@ def clear_dir(path):
 @app.route('/slave/<int:slave_id>/<string:action>')
 def get_info(slave_id, action):
     dir_files = 'files_info/'
-    print 'got call'
     if action == 'Q':
         print 'quitting slave'
         print slave_id
@@ -124,8 +123,8 @@ def get_info_cpu(slave_id, cpu):
 
     info_slaves = read_files(dir_files)
     if info_slaves is not None:
-        #iterate over array and se if it is time for a scaleing
-        #call webhook to activate action
+        for slave in info_slaves:
+            print slave
         return
 
     return jsonify(1)
