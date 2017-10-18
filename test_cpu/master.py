@@ -2,8 +2,8 @@ from flask import Flask, jsonify
 import time, os, requests
 app = Flask("master")
 
-webhook_url_up = ""
-webhook_url_down = ""
+webhook_url_up = "http://#"
+webhook_url_down = "http://#"
 webhook_token = ""
 
 #######################
