@@ -129,7 +129,6 @@ def get_info(slave_id, action):
         print 'quitting slave'
         print slave_id
         print delete_file(dir_files+str(slave_id))
-        #remove file in dir
     elif action == 'N':
         print 'new user'
         print slave_id
