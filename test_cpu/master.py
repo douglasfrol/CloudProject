@@ -133,7 +133,6 @@ def get_info(slave_id, action):
         print 'new user'
         print slave_id
         print create_file(dir_files, slave_id, 0.0)
-        #create file in dir
     else:
         print 'not a good input'
         return jsonify(0)
