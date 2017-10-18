@@ -101,20 +101,20 @@ def determin_scaleing(slave_info):
     scale_flag = -1
     for slave in slave_info:
         if slave[1] is not None and slave[2] is not None:
-            if slave[1] > s_upp && slave[2] > time.time()-time_lim and scale_flag == -1:
+            if slave[1] > s_upp and slave[2] > time.time()-time_lim and scale_flag == -1:
                 scale_flag = 1
-            elif slave[1] < s_down && slave[2] > time.time()-time_lim :
+            elif slave[1] < s_down and slave[2] > time.time()-time_lim :
                 scale_flag = 0
     if scale_flag == 1:
         info_master = get_info_in_file(dir_file)
-        if info_master[1] == 1 && info_master[2] < time.time()-(90):
+        if info_master[1] == 1 and info_master[2] < time.time()-(90):
             # time to scale
             print 'time to scale upp'
         elif info_master[1] == 0:
             update_file('files_info/', 0, 1)
     elif scale_flag == 0:
         info_master = get_info_in_file(dir_file)
-        if info_master[1] == 0 && info_master[2] < time.time()-(90):
+        if info_master[1] == 0 and info_master[2] < time.time()-(90):
             # time to scale
             print 'time to scale down'
         elif info_master[1] == 1:
