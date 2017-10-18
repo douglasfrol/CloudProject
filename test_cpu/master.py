@@ -61,7 +61,7 @@ def read_files(path_files):
     for f in files:
         if f[0] != '.':
             info = get_info_in_file(path_files+f)
-            info = [int(info[0]),int(info[1]),int(info[2])]
+            info = [int(info[0]),float(info[1]),int(info[2])]
             ret.append()
     return ret
 
