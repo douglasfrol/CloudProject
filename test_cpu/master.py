@@ -60,7 +60,9 @@ def read_files(path_files):
     files = getFiles(path_files)
     for f in files:
         if f[0] != '.':
-            ret.append(get_info_in_file(path_files+f))
+            info = get_info_in_file(path_files+f)
+            info = [int(info[0]),int(info[1]),int(info[2])]
+            ret.append()
     return ret
 
 def update_file(path, slave_id, cpu):
