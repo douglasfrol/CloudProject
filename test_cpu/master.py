@@ -59,7 +59,7 @@ def read_files(path_files):
     ret = []
     files = getFiles(path_files)
     for f in files:
-        if f[0] != '.':
+        if f[0] != '.' and  f[0] != '0':
             info = get_info_in_file(path_files+f)
             info = [int(info[0]),float(info[1]),float(info[2])]
             ret.append(info)
