@@ -130,7 +130,7 @@ def determin_scaleing(slave_info):
             headers = {
                 'X-Auth-Token': webhook_token,
             }
-            #requests.post(webhook_url_up, headers=headers)
+            requests.post(webhook_url_up, headers=headers)
 
             print 'time to scale upp'
         elif int(info_master[1]) == 0:
@@ -142,7 +142,7 @@ def determin_scaleing(slave_info):
             headers = {
                 'X-Auth-Token': webhook_token,
             }
-            #requests.post(webhook_url_down, headers=headers)
+            requests.post(webhook_url_down, headers=headers)
 
             print 'time to scale down'
         elif int(info_master[1]) == 1:
