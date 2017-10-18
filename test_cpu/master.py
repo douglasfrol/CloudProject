@@ -122,27 +122,27 @@ def determin_scaleing(slave_info):
     if scale_flag == 1:
         info_master = get_info_in_file(dir_file)
         if int(info_master[1]) == 1 and float(info_master[2]) < time.time()-(90):
-            # token_string = "X-Auth-Token: " + webhook_token
-            # curl -i -H token_string -X POST webhook_url_up
+
             headers = {
                 'X-Auth-Token': webhook_token,
             }
             requests.post(webhook_url_up, headers=headers)
+
             print 'time to scale upp'
         elif int(info_master[1]) == 0:
             update_file('files_info/', 0, 1)
     elif scale_flag == 0:
         info_master = get_info_in_file(dir_file)
         if int(info_master[1]) == 0 and float(info_master[2]) < time.time()-(90):
-            # token_string = "X-Auth-Token: " + webhook_token
-            # curl -i -H "X-Auth-Token: webhooken" -X POST webhook_url_down
+
             headers = {
                 'X-Auth-Token': webhook_token,
             }
             requests.post(webhook_url_down, headers=headers)
+
             print 'time to scale down'
         elif int(info_master[1]) == 1:
-            update_file('files_info/', 0, 1)
+            update_file('files_info/', 0, 0)
 
 
 @app.route('/slave/<int:slave_id>/<string:action>')

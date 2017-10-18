@@ -76,4 +76,3 @@ if __name__ == '__main__':
     finally:
         print 'quitting'
         res = make_call(url, 'Q')
-        time.sleep(1)
