@@ -83,6 +83,13 @@ def delete_file(file_path):
 
     return False
 
+def clear_dir(path):
+
+    files = getFiles(path)
+    for f in files:
+        if f[0] != '.':
+            delete_file(path+f)
+
 @app.route('/slave/<int:slave_id>/<string:action>')
 def get_info(slave_id, action):
     dir_files = 'files_info/'
@@ -123,4 +130,5 @@ def get_info_cpu(slave_id, cpu):
     return jsonify(1)
 
 if __name__ == '__main__':
+    clear_dir('files_info/')
     app.run(host= '0.0.0.0', debug=True)

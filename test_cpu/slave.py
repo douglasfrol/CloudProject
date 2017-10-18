@@ -12,7 +12,6 @@ failed_con = 0
 def make_call(url_link, value):
     global failed_con
     try:
-        print "making call to " + url_link+value
         r = requests.get(url_link+value)
         response_json = r.json()
     except Exception as e:
