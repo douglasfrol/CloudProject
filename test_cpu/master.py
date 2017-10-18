@@ -93,6 +93,35 @@ def clear_dir(path):
         if f[0] != '.':
             delete_file(path+f)
 
+def determin_scaleing(slave_info):
+    s_upp = 90
+    s_down = 30
+    time_lim = 180
+    dir_file = 'files_info/0'
+    scale_flag = -1
+    for slave in slave_info:
+        if slave[1] is not None and slave[2] is not None:
+            if slave[1] > s_upp && slave[2] > time.time()-time_lim and scale_flag == -1:
+                scale_flag = 1
+            elif slave[1] < s_down && slave[2] > time.time()-time_lim :
+                scale_flag = 0
+    if scale_flag == 1:
+        info_master = get_info_in_file(dir_file)
+        if info_master[1] == 1 && info_master[2] < time.time()-(90):
+            # time to scale
+            print 'time to scale upp'
+        elif info_master[1] == 0:
+            update_file('files_info/', 0, 1)
+    elif scale_flag == 0:
+        info_master = get_info_in_file(dir_file)
+        if info_master[1] == 0 && info_master[2] < time.time()-(90):
+            # time to scale
+            print 'time to scale down'
+        elif info_master[1] == 1:
+            update_file('files_info/', 0, 1)
+
+
+
 @app.route('/slave/<int:slave_id>/<string:action>')
 def get_info(slave_id, action):
     dir_files = 'files_info/'
@@ -125,8 +154,7 @@ def get_info_cpu(slave_id, cpu):
 
     info_slaves = read_files(dir_files)
     if info_slaves is not None:
-        for slave in info_slaves:
-            print slave
+        determin_scaleing(info_slaves)
 
     return jsonify(1)
 
