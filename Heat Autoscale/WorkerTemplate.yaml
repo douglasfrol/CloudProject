@@ -110,7 +110,7 @@ resources:
         echo "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDXbJoFEUvJM8tANur7/qzvgSs9M7KfPJZ2eOfaEVmHkInP8J/AvorEPz7sL1MFqln6acWOwT4OMW+yiYX9LarMwR5lMuJ/8Pz6Sxn8+CamrhH70d5mfiY2iUhSyVmtznule+37h7NTx9u+BpWB2S1J0tnJvbvsVXm8ZFY+s3ky90SjIWci85ISzanSUyg2PF7NV2qyQyBoPW52ATSZqT9VUqlgjLm1K7cdAoOUH+ObARvnDjfAWSU4gxuN2ucx5YUEXfFOUhnWhHmVcCYhGHyeyOtsqLWNen/JLlBR9slTyagCZ37EWS73tmSHOmbsqzIpFXtu0PvoQcHOd1E+F73n" >> /home/ubuntu/.ssh/authorized_keys 
         cd /home/ubuntu/CloudProject
         git pull
-        celery -A worker worker --loglevel=INFO &
+        celery -A worker worker --loglevel=INFO
       user_data_format: RAW
 
   floating_ip:
