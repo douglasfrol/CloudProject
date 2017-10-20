@@ -66,17 +66,30 @@ def mainFunction():
     #Check if list is not empty
     if notInDb:
         print "Creating meshes for angles"
-        createMeshes(values)
-        convertMeshes(angles)
+        #createMeshes(values)
+        #convertMeshes(angles)
     else:
         print "All angles already calculated"
     #'angle' = [drag, lift]
     returnAngles = {}
+    workerAngles = {}
     for angle in angles:
         if angle in notInDb: 
-            returnAngles[angle] = airfoil.delay('r0a' + str(angle) + 'n200.xml')
+            workerAngles[angle] = airfoil.delay('r0a' + str(angle) + 'n200.xml')
         else:
             returnAngles[angle] = inDb[angle]
+    
+    for angle in angles:
+	if angle in notInDb:
+	     #Wait for worker
+	     while not workerAngles[angle].ready():
+	          pass
+             #Get result from worker
+	     returnAngles[angle] = workerAngles[angle].get()
+	     #Save result to db
+	     insert(angle, returnAngles[angle][0], returnAngles[angle][1])
     return returnAngles
+
+    
 
 mainFunction()

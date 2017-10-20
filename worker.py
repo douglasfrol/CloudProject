@@ -2,8 +2,8 @@ from celery import Celery
 import subprocess
 from calcAverageForce import *
 
-hostIP = '129.16.125.231'
-brokerURL = 'amqp://guest@localhost/'
+hostIP = '129.16.125.241'
+brokerURL = 'amqp://user:pwd@localhost:5672/vhost'
 sshKey = '/home/ubuntu/dofr_keypair.pem'
 airfoilDirectory = '/home/ubuntu/murtazo/navier_stokes_solver/'
 mshDirectory = '/home/ubuntu/murtazo/cloudnaca/msh/'
@@ -20,8 +20,7 @@ def airfoil(filename):
 	print airfoilStrings
 	subprocess.call(airfoilStrings, cwd = airfoilDirectory)
 	avg_drag, avg_lift = calcAvgLiftAndDrag()
-	print airfoilStrings
-	#return -1, -1 
+	print airfoilStrings 
 	return avg_drag, avg_lift
 
 
