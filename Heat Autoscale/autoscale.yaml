@@ -4,8 +4,8 @@ description: Group for auto scaling
 
 resources:
 
-  master: 
-    type: OS::Nova::Server::Master
+  #master: 
+  #  type: OS::Nova::Server::Master
 
   group:
     type: OS::Heat::AutoScalingGroup
