@@ -116,13 +116,13 @@ resources:
   floating_ip:
     type: OS::Neutron::FloatingIP
     properties:
-      floating_network: { get_param: public_network }
+      #floating_network: { get_param: public_network }
+      floating_ip_addres: "129.16.125.241"
 
   floating_ip_assoc:
     type: OS::Neutron::FloatingIPAssociation
     properties:
-      #floatingip_id: { get_resource: floating_ip }
-      floating_ip_addres: "129.16.125.241"
+      floatingip_id: { get_resource: floating_ip }
       port_id: { get_resource: port }
 
 
