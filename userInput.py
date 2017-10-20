@@ -87,7 +87,7 @@ def mainFunction():
              #Get result from worker
 	     returnAngles[angle] = workerAngles[angle].get()
 	     #Save result to db
-	     insert(angle, returnAngles[angle][0], returnAngles[angle][1])
+	     insertResults(angle, returnAngles[angle][0], returnAngles[angle][1])
     return returnAngles
 
     

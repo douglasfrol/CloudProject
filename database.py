@@ -28,7 +28,7 @@ def createResults():
 			LIFT FLOAT)"""
 	executeSQL(sql)
 
-def insert(angle, drag, lift):
+def insertResults(angle, drag, lift):
 	#TODO Check valid input?
 	db, cursor = connectAndGetCursor()
 	sql = "INSERT INTO RESULTS (ANGLE, DRAG, LIFT) VALUES ('" + str(angle) + "','" + str(drag) + "','" + str(lift) + "')"
