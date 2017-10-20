@@ -10,7 +10,7 @@ parameters:
     label: Image name or ID
     description: Image to be used for worker VM (Ubuntu 16.04 LTS - Xenial Xerus)
     #default: 7211d89e-6b27-4986-9f53-f48868da6d0c
-    default: e1cddf48-05ae-4eed-ae34-f63ff8be5b40
+    default: 966cb731-025c-4911-bb79-2b1c046f1817
 
   flavor:
     type: string
