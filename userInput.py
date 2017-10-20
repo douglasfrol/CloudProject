@@ -2,7 +2,7 @@ import sys
 import subprocess
 import os
 from celery import Celery
-from database import readValues
+from database import readValues, insertResults
 from worker import airfoil
 
 appBroker = 'amqp://guest@localhost//'
@@ -66,8 +66,8 @@ def mainFunction():
     #Check if list is not empty
     if notInDb:
         print "Creating meshes for angles"
-        #createMeshes(values)
-        #convertMeshes(angles)
+        createMeshes(values)
+        convertMeshes(angles)
     else:
         print "All angles already calculated"
     #'angle' = [drag, lift]
@@ -82,12 +82,14 @@ def mainFunction():
     for angle in angles:
 	if angle in notInDb:
 	     #Wait for worker
+	     print('waiting for worker')
 	     while not workerAngles[angle].ready():
 	          pass
              #Get result from worker
 	     returnAngles[angle] = workerAngles[angle].get()
 	     #Save result to db
 	     insertResults(angle, returnAngles[angle][0], returnAngles[angle][1])
+    print(returnAngles)
     return returnAngles
 
     
