@@ -121,7 +121,8 @@ resources:
   floating_ip_assoc:
     type: OS::Neutron::FloatingIPAssociation
     properties:
-      floatingip_id: { get_resource: floating_ip }
+      #floatingip_id: { get_resource: floating_ip }
+      floating_ip_addres: "129.16.125.241"
       port_id: { get_resource: port }
 
 
