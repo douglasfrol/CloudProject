@@ -9,7 +9,8 @@ parameters:
     type: string
     label: Image name or ID
     description: Image to be used for worker VM (Ubuntu 16.04 LTS - Xenial Xerus)
-    default: 7211d89e-6b27-4986-9f53-f48868da6d0c
+    #default: 7211d89e-6b27-4986-9f53-f48868da6d0c
+    default: e1cddf48-05ae-4eed-ae34-f63ff8be5b40
 
   flavor:
     type: string
@@ -33,7 +34,8 @@ parameters:
     type: string
     label: Private network
     description: Group 12 Internal Network
-    default: Group 12 Internal Network
+    #default: Group 12 Internal Network
+    default: SNIC 2017/13-45 Internal IPv4 Network
 
 # Resource allocation
 resources:
